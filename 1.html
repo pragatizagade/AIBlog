@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Blog Editor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr" defer></script>
+    <style>
+        /* Reset & Basic Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f0f4f9, #d6e5fa);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* Navigation Bar */
+        nav {
+            width: 100%;
+            height: 50px;
+            display: grid;
+            grid-template-columns: 4% 4% 50% 10% 10% 10%;
+            gap: 10px;
+            background-color: #3c4f76;
+            padding: 5px;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        nav button {
+            border: none;
+            border-radius: 8px;
+            padding: 5px;
+            background: linear-gradient(to bottom, #ffffff, #e6f1ff);
+            color: #3c4f76;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        nav button:hover {
+            background: #3c4f76;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Feature Section */
+        .Feature {
+            padding: 20px;
+        }
+
+        .Features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(60px,0fr));
+            height: 50px;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Features div {
+            background-color: transparent;
+            border-radius: 5px;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .Features div * {
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: 0;
+        padding: 0;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    button, select {
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        text-align: center;
+        outline: none;
+        /* background: linear-gradient(to right, #4facfe, #00f2fe); */
+            color: black;
+
+    }
+
+    button:hover, select:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+        /* Main Blog Section */
+        .MB {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            
+        }
+
+        .hintcolor {
+            background: #ffeeba;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            /* padding: 10px; */
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            height:10px;
+        }
+
+        .mb {
+            width:60%;
+            margin-left: 20%;
+            height:800px;
+            background: linear-gradient(to bottom right, #ffffff, #e0eaff);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .mb1 {
+            padding: 20px;
+            
+        }
+
+        .title {
+            height: 10%;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .task {
+            height: 700px;;
+        }
+
+        .task p {
+            width: 100%;
+            height: 95%; /* Increased height */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 23px;
+            line-height:1; 
+            word-spacing: 5px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            resize: none;
+            background: linear-gradient(to bottom, #fdfdfd, #f2f8ff);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        .task p:focus {
+            border: 1px solid #3c4f76;
+            box-shadow: 0 0 8px rgba(60, 79, 118, 0.4);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            nav {
+                grid-template-columns: 20% 20% 20% 20% 20%;
+            }
+
+            .Features {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 5px;
+            }
+
+            .mb1 {
+                margin-left: 5%;
+                width: 90%;
+            }
+        }
+
+        /* CSS for the .Z container */
+.Z {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    /* max-width: 600px; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Style for the button inside .Z */
+.Z button {
+    padding: 12px 24px;
+    background-color: #3c4f76;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Z button:hover {
+    background-color: #2c3e50;
+    transform: scale(1.05);
+}
+
+/* Style for the generated titles */
+.generated-titles {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    color: #333;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+/* Individual title style */
+.generated-titles .title-item {
+    padding: 8px;
+    border-bottom: 1px solid #1f1717;
+}
+
+.generated-titles .title-item:last-child {
+    border-bottom: none; /* Remove the last border */
+}
+
+/* Highlight titles on hover */
+/* .generated-titles .title-item:hover {
+    background-color: #f3f4f6;
+    color: #000;
+    cursor: pointer;
+}
+.title-list {
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .title-item {
+            background-color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background-color: #f39c12;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background-color: #e67e22;
+        }
+
+        #error-message {
+            color: red;
+            font-size: 1rem;
+            margin-top: 10px;
+        } */
+/* Responsive Design */
+/* @media (max-width: 768px) {
+    .Z {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .Z button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .generated-titles {
+        font-size: 16px;
+    }
+} */
+
+
+.generated-titles {
+    width: 100%;
+    height:600px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), inset 0 -4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    color: #333;
+    font-weight: normal;
+    line-height: 1.5;
+    transform: perspective(800px) rotateX(0deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.generated-titles:hover {
+    transform: perspective(800px) rotateX(3deg);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), inset 0 -6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual title style with more depth */
+.generated-titles .title-item {
+    padding: 12px;
+    margin: 8px 0;
+    background: linear-gradient(145deg, #e3e3e3, #ffffff);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.generated-titles .title-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), inset 0 -3px 6px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    color: #000;
+    cursor: pointer;
+}
+
+/* Highlight last-child for cleaner look */
+.generated-titles .title-item:last-child {
+    border-bottom: none;
+}
+
+/* Title List Styling */
+.title-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.title-item {
+    padding: 12px;
+    margin: 8px 0;
+    background: linear-gradient(145deg, #f9f9f9, #ffffff);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.title-item:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(145deg, #ffffff, #f4f4f4);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), inset 0 -3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Copy Button Styling */
+.copy-btn {
+    background-color: #f39c12;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.copy-btn:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Error Message Styling */
+#error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .Z {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .Z button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .generated-titles {
+        font-size: 16px;
+    }
+}   
+.tooltip:hover {
+  background-color: #45a049; /* Darker shade on hover */
+  transform: translateY(-2px); /* Subtle hover animation */
+}
+
+/* Tooltip styling */
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px; /* Position the tooltip below the button */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333; /* Tooltip background color */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px; /* Modern rounded corners */
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Show tooltip on hover */
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  bottom: -40px; /* Add some gap between button and tooltip */
+}
+
+/* Optional: Styling the text when the button is active */
+.tooltip:active {
+  background-color: #388e3c;
+}
+.tooltip {
+    position: relative; /* For proper alignment */
+    width: 100%; /* Ensure it fills the grid cell */
+    height: 100%; /* Ensure it fills the grid cell */
+    background-size: contain; /* Scale image to fit the button */
+    background-repeat: no-repeat; /* Prevent image repetition */
+    background-position: center; /* Center the image */
+    border: none; /* Remove default border */
+    color: transparent; /* Hide button text */
+    border-radius: 5px; /* Match other buttons' style */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effects */
+    cursor: pointer; /* Pointer cursor for interactivity */
+}
+
+.tooltip:hover {
+    transform: scale(1.05); /* Slight enlargement on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.tooltip:active {
+    transform: scale(0.95); /* Shrink on click */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4); /* Reduce shadow on click */
+}
+/* side bar  */
+#sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 20px;
+}
+
+.sidebar-content {
+  padding: 10px;
+}
+
+.sidebar-content h2 {
+  color: white;
+}
+
+#recentBlogs {
+  margin-top: 20px;
+}
+
+#recentBlogs .blog-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+}
+
+#recentBlogs .blog-item:hover {
+  background-color: #555;
+}
+
+#recentBlogs .blog-item img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+#recentBlogs .blog-item .delete-btn {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#recentBlogs .blog-item .delete-btn:hover {
+  background-color: darkred;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <button onclick="home()">Back</button>
+            <button id="recent">Recent</button>
+            <button>Settings</button>
+            <!-- <div class="Title"></div> -->
+            <!-- <button onclick="generateTitle()">Generate Title</button> -->
+            <button onclick="saveBlog()">Save Changes</button>
+        </nav>   
+    </header>
+    <section class="Feature">
+        <div class="Features">
+            <div id="A">
+                <!-- <label for="fontsize" >Normal</label> -->
+                <select id="fontsize">
+                    <option value="none">Normal</option>
+                    <option value="h1">H1</option>
+                    <option value="h2">H2</option>
+                    <option value="h3">H3</option>
+                    <option value="h4">H4</option>
+                    <option value="h5">H5</option>
+                    <option value="h6">H6</option>
+                </select>
+            </div>
+            <div id="B">
+                <button id="boldButton" class="tooltip" data-tooltip="Bold">B</button>
+            </div>
+            <div id="C">
+                <button id="italic" class="tooltip" data-tooltip="Italic">I</button>
+            </div>
+            <div id="D">
+                <button id="underline" class="tooltip" data-tooltip="Bold">Un</button>
+            </div>
+            <div id="E">
+                <button id="strikethrough" class="tooltip" data-tooltip="Strickthrough">S</button>
+            </div>
+            <div id="F">
+                <button id="textColorButton" class="tooltip" data-tooltip="Text Color">TColr</button>
+            </div>
+            <div id="G">
+                <button id="bgColorButton" class="tooltip" data-tooltip="Background">BackColr</button>
+            </div>
+            <div id="H">
+                <button id="undo" class="tooltip" data-tooltip="Undo">Undo</button>
+            </div>
+            <div id="I">
+                <button id="redo" class="tooltip" data-tooltip="Redo">Redo</button>
+            </div>
+            
+        </div>
+        <div class="MB">
+            <div class="hintcolor">
+
+            </div>
+            <div class="mb">
+                <div class="mb1">
+                    <div class="title" contenteditable="true">Untitle</div>
+                    <div class="task">
+                        <p id="prompt" contenteditable="true" placeholder="Enter a prompt for the title..." ></p><br>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+        <div class="Z">
+            <button onclick="generateTitle()" >Generate Title</button>
+            <div id="error-message"></div>
+            <ul id="generatedTitles" class="title-list"></ul>
+        </div>
+    </section>
+
+    <!-- side bar  -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+          <h2>Recent Blogs</h2>
+          <div id="recentBlogs"></div>
+        </div>
+      </div>
+    
+    
+    <script>
+        // Function Definitions
+
+// Redirect to the Home page
+function home() {
+    window.location.href = "home.html";
+}
+
+// Generate Titles from Backend
+async function generateTitle() {
+    const prompt = document.getElementById('prompt').innerText;
+    document.getElementById('error-message').innerText = '';
+    document.getElementById('generatedTitles').innerHTML = ''; // Clear previous results
+
+    try {
+        const response = await fetch('http://localhost:5000/generate-title', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt })
+        });
+
+        const data = await response.json();
+        if (data.title) {
+            const titles = data.title.split('\n').filter(title => title.trim() !== '').map(title => title.trim());
+            const titlesToDisplay = titles.slice(1, titles.length - 1); // Skip first and last
+            const titleList = document.getElementById('generatedTitles');
+
+            titlesToDisplay.forEach(title => {
+                const titleItem = document.createElement('li');
+                titleItem.classList.add('title-item');
+                titleItem.innerHTML = `
+                    <span>${title.replace(/\*/g, '').trim()}</span>
+                    <button class="copy-btn" onclick="addTitle('${title.replace(/\*/g, '').trim()}')">Add</button>
+                `;
+                titleList.appendChild(titleItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('error-message').innerText = 'Error generating title. Please try again.';
+    }
+}
+
+// Add Title to Display Area
+function addTitle(title) {
+    const titleDisplayArea = document.querySelector('.title');
+    titleDisplayArea.innerHTML = title;
+}
+
+// Text Formatting Functions
+document.getElementById("boldButton").addEventListener("click", () => {
+    document.execCommand("bold", false, null);
+});
+
+document.getElementById("italic").addEventListener("click", () => {
+    document.execCommand("italic", false, null);
+});
+
+document.getElementById("underline").addEventListener("click", () => {
+    document.execCommand("underline", false, null);
+});
+
+document.getElementById("strikethrough").addEventListener("click", () => {
+    document.execCommand("strikethrough", false, null);
+});
+
+document.getElementById("fontsize").addEventListener("change", (e) => {
+    const select = e.target.value;
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const headingElement = document.createElement(select);
+        headingElement.textContent = range.toString();
+        range.deleteContents();
+        range.insertNode(headingElement);
+        selection.removeAllRanges();
+    } else {
+        alert("Please select some text to apply the heading");
+    }
+});
+
+// Undo and Redo
+
+document.getElementById("undo").addEventListener("click", () => {
+    document.execCommand("undo");
+});
+
+document.getElementById("redo").addEventListener("click", () => {
+    document.execCommand("redo");
+});
+
+// Sidebar Toggle
+const sidebar = document.getElementById("sidebar");
+const recent = document.getElementById("recent");
+const recentBlogsContainer = document.getElementById("recentBlogs");
+
+// Open/Close Sidebar
+const openSidebar = () => sidebar.style.left = "0";
+const closeSidebar = () => sidebar.style.left = "-250px";
+
+// Toggle Sidebar when clicking the "Recent" button
+recent.addEventListener("click", (event) => {
+  if (sidebar.style.left === "0px") {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+  event.stopPropagation();
+});
+
+// Close Sidebar if click is outside
+document.addEventListener("click", (event) => {
+  if (!sidebar.contains(event.target) && event.target !== recent) {
+    closeSidebar();
+  }
+});
+
+sidebar.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+// Save Blog to Local Storage and Sidebar
+let currentEditingId = null; // To track the blog being edited
+
+// Save a blog to localStorage and backend
+async function saveBlog() {
+  const titleElement = document.querySelector(".title");
+  const contentElement = document.getElementById("prompt");
+
+  const title = titleElement.textContent.trim();
+  const content = contentElement.textContent.trim();
+
+  if (!title || !content) {
+    alert("Please fill in both title and content before saving!");
+    return;
+  }
+
+  let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  let blogToSave;
+
+  if (currentEditingId) {
+    // Update an existing blog
+    blogToSave = { ...blogs.find(blog => blog._id === currentEditingId), title, content };
+  } else {
+    // Create a new blog
+    blogToSave = { title, content };
+  }
+
+  try {
+    const updatedBlog = await saveBlogToBackend(blogToSave); // Wait for backend response
+    if (!updatedBlog) throw new Error("Backend save failed.");
+
+    if (currentEditingId) {
+      // Update localStorage for an edited blog
+      blogs = blogs.map(blog => (blog._id === updatedBlog._id ? updatedBlog : blog));
+    } else {
+      // Add the new blog with backend-provided `_id`
+      blogs.push(updatedBlog);
+    }
+
+    localStorage.setItem("blogs", JSON.stringify(blogs)); // Sync localStorage with backend
+    renderSidebar(); // Ensure sidebar is re-rendered
+    resetEditor();   // Reset the editor UI and state
+  } catch (error) {
+    console.error("Error saving blog:", error);
+    alert("Failed to save the blog. Please try again later.");
+  }
+}
+
+// Save blog to backend
+async function saveBlogToBackend(blog) {
+  const url = blog._id ? `/blogs/${blog._id}` : "/blogs";
+  const method = blog._id ? "PUT" : "POST";
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(blog),
+    });
+
+    if (!response.ok) throw new Error(`Failed to ${method === "POST" ? "create" : "update"} blog`);
+
+    const savedBlog = await response.json();
+    
+    if (!savedBlog._id) {
+      throw new Error("Backend response missing '_id'");
+    }
+
+    return savedBlog; // Return the saved blog with its _id
+  } catch (error) {
+    console.error("Backend operation failed:", error);
+    return null; // Return null if the save operation failed
+  }
+}
+
+// Render sidebar blogs
+async function renderSidebar() {
+  const recentBlogsContainer = document.getElementById("recent-blogs");
+  if (!recentBlogsContainer) {
+    console.error("Recent blogs container is not defined.");
+    return;
+  }
+
+  try {
+    const response = await fetch("/blogs");
+    if (!response.ok) throw new Error("Failed to fetch blogs");
+
+    const blogs = await response.json();
+    localStorage.setItem("blogs", JSON.stringify(blogs));
+    recentBlogsContainer.innerHTML = ""; // Clear the container
+
+    blogs.forEach(blog => {
+      const blogItem = document.createElement("div");
+      blogItem.classList.add("blog-item");
+
+      const truncatedTitle = blog.title.length > 20 ? `${blog.title.slice(0, 20)}...` : blog.title;
+
+      blogItem.innerHTML = `
+        <span class="blog-title">${truncatedTitle}</span>
+        <button class="delete-btn" onclick="deleteBlog('${blog._id}')">Delete</button>
+      `;
+      blogItem.addEventListener("click", () => loadBlog(blog._id));
+      recentBlogsContainer.appendChild(blogItem);
+    });
+  } catch (error) {
+    console.error("Error rendering sidebar:", error);
+  }
+}
+
+// Load a blog for editing
+async function loadBlog(blogId) {
+  if (!blogId) return;
+
+  try {
+    const response = await fetch(`/blogs/${blogId}`);
+    if (!response.ok) throw new Error("Failed to load blog");
+
+    const blog = await response.json();
+    document.querySelector(".title").textContent = blog.title;
+    document.getElementById("prompt").textContent = blog.content;
+    currentEditingId = blog._id; // Set the editing state
+  } catch (error) {
+    console.error("Error loading blog:", error);
+  }
+}
+
+// Delete a blog
+async function deleteBlog(blogId) {
+  try {
+    const response = await fetch(`/blogs/${blogId}`, { method: "DELETE" });
+    if (!response.ok) throw new Error("Failed to delete blog");
+
+    let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    blogs = blogs.filter(blog => blog._id !== blogId);
+    localStorage.setItem("blogs", JSON.stringify(blogs));
+
+    if (currentEditingId === blogId) resetEditor();
+
+    renderSidebar();
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+  }
+}
+
+// Reset editor state
+function resetEditor() {
+  document.querySelector(".title").textContent = "Untitled";
+  document.getElementById("prompt").textContent = "";
+  currentEditingId = null;
+}
+
+// Initialize sidebar on page load
+document.addEventListener("DOMContentLoaded", renderSidebar);
+
+// Color Picker Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    const textColorPickr = Pickr.create({
+      // el:"#textColorButton" ,
+      theme: "classic",
+        default: "#000000",
+        swatches: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'],
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: { input: true, save: true }
+        }
+    });
+
+    const bgColorPickr = Pickr.create({
+      // el: '#bgColorButton',
+      theme: 'classic',
+        default: "#FFFFFF",
+        swatches: ['#FFFFFF', '#F0F0F0', '#C0C0C0', '#A0A0A0', '#808080'],
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+            interaction: { input: true, save: true }
+        }
+    });
+
+    textColorPickr.on('save', (color) => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const span = document.createElement("span");
+            span.style.color = color.toHEXA().toString();
+            range.surroundContents(span);
+        } else {
+            alert('Please select some text to apply the color.');
+        }
+        textColorPickr.hide();
+    });
+
+    bgColorPickr.on("save", (color) => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const span = document.createElement("span");
+            span.style.backgroundColor = color.toHEXA().toString();
+            range.surroundContents(span);
+        } else {
+            alert('Please select some text to apply the background color.');
+        }
+        bgColorPickr.hide();
+    });
+});
+
+// Button Style Configuration
+const buttons = [
+    { id: "boldButton", image: "https://icons.veryicon.com/png/o/miscellaneous/docs/bold-25.png" },
+    { id: "italic", image: "https://cdn3.iconfinder.com/data/icons/flat-and-simple-part-3/128/italic-512.png" },
+    { id: "underline", image: "https://cdn.icon-icons.com/icons2/1875/PNG/512/underline_120323.png" },
+    { id: "strikethrough", image: "https://cdn.icon-icons.com/icons2/1369/PNG/512/-strikethrough-s_90010.png" },
+    { id: "textColorButton", image: "https://static.thenounproject.com/png/5498149-200.png" },
+    { id: "bgColorButton", image: "https://www.svgrepo.com/show/375183/text-background-color.svg" },
+    { id: "undo", image: "https://pixsector.com/cache/27af42b6/av850295a4214e0e9f9a1.png" },
+    { id: "redo", image: "https://www.pixsector.com/cache/10584cdb/av7dc837382922be42a4e.png" }
+];
+
+buttons.forEach(button => {
+    const element = document.getElementById(button.id);
+    element.style.backgroundImage = `url('${button.image}')`;
+});
+
+
+//side bar and deleting part also
+
+    </script>
+</body>
+</html>
